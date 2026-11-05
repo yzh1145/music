@@ -1,0 +1,373 @@
+/* ==================== 全局基础样式（仿网易云音乐配色） ==================== */
+:root {
+  --music-red: #c20c0c;
+  --music-red-light: #ec4141;
+  --player-height: 72px;
+
+  /* 页面配色：组件统一引用这组变量，深色模式只需在 html.dark 中覆盖 */
+  --music-bg: #f6f6f6;
+  --music-card: #ffffff;
+  --music-text: #333333;
+  --music-text-2: #666666;
+  --music-text-3: #999999;
+  --music-text-light: #888888;
+  --music-border: #f0f0f0;
+  --music-hover: #f5f5f5;
+  --music-soft: #fafafa;
+  --music-active-bg: #fdf0f0;
+  --music-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --music-header-bg: linear-gradient(90deg, #b30707, #c20c0c 45%, #d81717);
+  --music-header-shadow: 0 2px 10px rgba(120, 0, 0, 0.25);
+  --music-nav-active-bg: #ffffff;
+  --music-nav-active-text: var(--music-red);
+  --music-player-bg: rgba(255, 255, 255, 0.86);
+  --music-scrollbar: #d0d0d0;
+  --music-scrollbar-hover: #b8b8b8;
+  /* 西文字体放在前面，避免英文落到雅黑上显得偏大 */
+  --music-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+
+  --el-font-family: var(--music-font);
+
+  /* Element Plus 主色：替换默认蓝色，滑块、分页、标签、聚焦边框等统一为红色系 */
+  --el-color-primary: #ec4141;
+  --el-color-primary-light-3: #f27a7a;
+  --el-color-primary-light-5: #f6a0a0;
+  --el-color-primary-light-7: #f9c6c6;
+  --el-color-primary-light-8: #fbd9d9;
+  --el-color-primary-light-9: #fdecec;
+  --el-color-primary-dark-2: #bd3434;
+}
+
+/* 深色模式：<html class="dark">；Element Plus 自带的暗色变量在 main.js 中引入，这里再覆盖主色与背景 */
+html.dark {
+  --music-bg: #16161a;
+  --music-card: #212126;
+  --music-text: #e6e6e6;
+  --music-text-2: #b4b4b8;
+  --music-text-3: #85858c;
+  --music-text-light: #8e8e95;
+  --music-border: #2e2e34;
+  --music-hover: #2a2a30;
+  --music-soft: #1b1b20;
+  --music-active-bg: rgba(236, 65, 65, 0.14);
+  --music-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --music-header-bg: #1c1c21;
+  --music-header-shadow: 0 1px 0 #2a2a30;
+  --music-nav-active-bg: var(--music-red-light);
+  --music-nav-active-text: #ffffff;
+  --music-player-bg: rgba(28, 28, 33, 0.86);
+  --music-scrollbar: #3a3a40;
+  --music-scrollbar-hover: #4a4a52;
+
+  --el-bg-color: #212126;
+  --el-bg-color-overlay: #26262c;
+  --el-bg-color-page: #16161a;
+  --el-color-primary: #ec4141;
+  --el-color-primary-light-3: #ab3434;
+  --el-color-primary-light-5: #802b2b;
+  --el-color-primary-light-7: #552222;
+  --el-color-primary-light-8: #3f1d1d;
+  --el-color-primary-light-9: #2a1919;
+  --el-color-primary-dark-2: #f06767;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--music-bg);
+  color: var(--music-text);
+  font-family: var(--music-font);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  user-select: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 等宽数字：序号、时长、播放量上下对齐 */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 20px calc(var(--player-height) + 48px);
+}
+
+.card {
+  background: var(--music-card);
+  border-radius: 12px;
+  box-shadow: var(--music-shadow);
+}
+
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--music-red-light);
+}
+
+.section-more {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--music-text-light);
+  cursor: pointer;
+}
+
+.section-more:hover {
+  color: var(--music-red-light);
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-light {
+  color: var(--music-text-light);
+}
+
+.cover-rounded {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 鼠标悬停时的播放按钮遮罩 */
+.cover-mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.cover-mask:hover {
+  opacity: 1;
+}
+
+.cover-mask .play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--music-red-light);
+  font-size: 22px;
+  transition: transform 0.2s ease;
+}
+
+.cover-mask .play-icon:hover {
+  transform: scale(1.08);
+}
+
+/* ==================== 详情页头部（歌单 / 专辑 / 歌手共用）：封面模糊做背景 ==================== */
+.hero {
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #2b2b2b;
+  color: #fff;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: -60px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) brightness(0.55) saturate(1.2);
+}
+
+.hero-body {
+  position: relative;
+  display: flex;
+  gap: 28px;
+  padding: 32px;
+}
+
+.hero-cover {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.hero-title {
+  margin: 10px 0 12px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+}
+
+.hero-intro {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.hero-link {
+  color: #fff;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.hero-link:hover {
+  color: #ffd7d7;
+}
+
+/* 深色背景上的次要按钮改为半透明，避免白色按钮太跳 */
+.hero .el-button:not(.el-button--primary):not(.el-button--danger) {
+  --el-button-bg-color: rgba(255, 255, 255, 0.12);
+  --el-button-border-color: rgba(255, 255, 255, 0.28);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: rgba(255, 255, 255, 0.2);
+  --el-button-hover-border-color: rgba(255, 255, 255, 0.45);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: rgba(255, 255, 255, 0.26);
+  --el-button-active-border-color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 768px) {
+  .hero-body {
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .hero-cover {
+    width: 150px;
+    height: 150px;
+  }
+
+  .hero-type,
+  .hero-meta,
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+/* Element Plus 主题色微调 */
+.el-button--primary {
+  --el-button-bg-color: var(--music-red-light);
+  --el-button-border-color: var(--music-red-light);
+  --el-button-hover-bg-color: #f55050;
+  --el-button-hover-border-color: #f55050;
+  --el-button-active-bg-color: var(--music-red);
+  --el-button-active-border-color: var(--music-red);
+}
+
+.el-tabs__item.is-active {
+  color: var(--music-red-light);
+}
+
+.el-tabs__active-bar {
+  background-color: var(--music-red-light);
+}
+
+.el-link.el-link--primary {
+  --el-link-text-color: var(--music-red-light);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: var(--music-scrollbar);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--music-scrollbar-hover);
+}
+
+/* 淡入动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

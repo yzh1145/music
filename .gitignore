@@ -1,0 +1,23 @@
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Backend build output and logs
+backend/target/
+backend/logs/
+
+# Local caches and temporary files
+.npm-cache/
+.tmp/
+*.tmp
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# IDE and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

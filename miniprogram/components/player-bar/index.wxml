@@ -1,0 +1,72 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="player-root">
+  <!-- 占位：避免页面最后一个元素被固定定位的播放条盖住 -->
+  <view class="spacer" wx:if="{{hasSong}}"></view>
+
+  <view class="player-bar" wx:if="{{hasSong}}" bindtap="onOpen">
+    <view class="progress-track">
+      <view class="progress-value" style="width: {{progress}}%"></view>
+    </view>
+
+    <view class="bar-inner">
+      <image class="cover {{playing ? 'spin' : 'spin spin-paused'}}" src="{{song.cover}}" mode="aspectFill" />
+
+      <view class="meta">
+        <view class="name-row">
+          <text class="name text-ellipsis">{{song.name}}</text>
+          <text class="liked" wx:if="{{song.liked}}">♥</text>
+        </view>
+        <text class="singer text-ellipsis">{{song.singerName}}</text>
+      </view>
+
+      <view class="like" catchtap="onLike">
+        <text class="{{song.liked ? 'liked-text' : ''}}">♥</text>
+      </view>
+
+      <view class="mode" catchtap="onMode">{{modeText}}</view>
+
+      <view class="play-btn" catchtap="onToggle">
+        <view class="play-triangle" wx:if="{{!playing}}"></view>
+        <view class="pause-bars" wx:else>
+          <view class="pause-bar"></view>
+          <view class="pause-bar"></view>
+        </view>
+      </view>
+
+      <view class="next-btn" catchtap="onNext">
+        <view class="next-triangle"></view>
+        <view class="next-bar"></view>
+      </view>
+
+      <view class="queue-btn" catchtap="onQueue">≡</view>
+    </view>
+  </view>
+
+  <!-- 播放队列 -->
+  <view class="queue-mask" wx:if="{{queueVisible}}" catchtap="closeQueue" catchtouchmove="onNoop">
+    <view class="queue-panel" catchtap="onNoop">
+      <view class="queue-head">
+        <text class="queue-title">当前播放（{{queue.length}}）</text>
+        <text class="queue-close" catchtap="closeQueue">关闭</text>
+      </view>
+      <scroll-view scroll-y class="queue-list">
+        <view
+          wx:for="{{queue}}"
+          wx:key="id"
+          class="queue-item {{index === currentIndex ? 'active' : ''}}"
+          data-index="{{index}}"
+          bindtap="onQueueItem"
+        >
+          <text class="queue-index num">{{index + 1}}</text>
+          <image class="queue-cover" src="{{item.cover}}" mode="aspectFill" />
+          <view class="queue-main">
+            <text class="queue-name text-ellipsis">{{item.name}}</text>
+            <text class="queue-singer text-ellipsis">{{item.singerName}}</text>
+          </view>
+          <text class="queue-time num">{{fmt.duration(item.duration)}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

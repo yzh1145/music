@@ -1,0 +1,106 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="comment-list">
+  <!-- 发表评论 -->
+  <view class="editor card">
+    <image class="editor-avatar" src="{{myAvatar}}" mode="aspectFill" />
+    <view class="editor-main">
+      <textarea
+        class="editor-textarea"
+        value="{{content}}"
+        maxlength="500"
+        placeholder="听歌的时候，在想些什么？"
+        placeholder-class="placeholder"
+        bindinput="onContentInput"
+        auto-height
+      />
+      <view class="editor-footer">
+        <text class="count">评论 {{total}} 条</text>
+        <view class="submit-btn {{submitting ? 'is-loading' : ''}}" bindtap="submit">
+          {{submitting ? '发布中…' : '发表评论'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论列表 -->
+  <view class="items">
+    <view class="loading-text" wx:if="{{loading && !comments.length}}">评论加载中…</view>
+
+    <view class="comment" wx:for="{{comments}}" wx:key="id">
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="body">
+        <view class="head">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="time">{{fmt.dateTime(item.createTime)}}</text>
+        </view>
+        <text class="content">{{item.content}}</text>
+        <view class="actions">
+          <view class="action {{item.liked ? 'liked' : ''}}" catchtap="toggleLike" data-id="{{item.id}}">
+            <text>♥</text>
+            <text>{{item.likeCount || '赞'}}</text>
+          </view>
+          <text class="action" catchtap="startReply" data-id="{{item.id}}" data-name="{{item.nickname}}">回复</text>
+          <text
+            class="action"
+            wx:if="{{myId === item.userId || isAdmin}}"
+            catchtap="removeComment"
+            data-id="{{item.id}}"
+          >删除</text>
+        </view>
+
+        <!-- 回复编辑框 -->
+        <view class="reply-editor" wx:if="{{replyTargetId === item.id}}">
+          <textarea
+            class="reply-textarea"
+            value="{{replyContent}}"
+            maxlength="500"
+            placeholder="回复 @{{replyTargetName}}"
+            placeholder-class="placeholder"
+            bindinput="onReplyInput"
+            auto-height
+          />
+          <view class="reply-actions">
+            <view class="reply-btn" catchtap="cancelReply">取消</view>
+            <view class="reply-btn primary" catchtap="submitReply">
+              {{replySubmitting ? '回复中…' : '回复'}}
+            </view>
+          </view>
+        </view>
+
+        <!-- 二级回复 -->
+        <view class="replies" wx:if="{{item.replies && item.replies.length}}">
+          <view class="reply" wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id">
+            <image class="reply-avatar" src="{{reply.avatar}}" mode="aspectFill" />
+            <view class="reply-body">
+              <view class="head">
+                <text class="nickname">{{reply.nickname}}</text>
+                <text class="time">{{fmt.dateTime(reply.createTime)}}</text>
+              </view>
+              <text class="reply-content">{{reply.content}}</text>
+              <view class="actions">
+                <view class="action {{reply.liked ? 'liked' : ''}}" catchtap="toggleLike" data-id="{{reply.id}}">
+                  <text>♥</text>
+                  <text>{{reply.likeCount || '赞'}}</text>
+                </view>
+                <text class="action" catchtap="startReply" data-id="{{item.id}}" data-name="{{item.nickname}}">回复</text>
+                <text
+                  class="action"
+                  wx:if="{{myId === reply.userId || isAdmin}}"
+                  catchtap="removeComment"
+                  data-id="{{reply.id}}"
+                >删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-tip" wx:if="{{!loading && !comments.length}}">还没有评论，快来抢沙发</view>
+
+    <view class="load-more" wx:if="{{hasMore}}" bindtap="loadMore">
+      {{loading ? '加载中…' : '加载更多评论'}}
+    </view>
+  </view>
+</view>

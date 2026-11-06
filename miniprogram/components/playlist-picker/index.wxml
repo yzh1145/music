@@ -1,0 +1,35 @@
+<view class="picker-mask" wx:if="{{show}}" catchtap="close" catchtouchmove="onNoop">
+  <view class="picker-panel" catchtap="onNoop">
+    <view class="picker-head">
+      <text class="picker-title">添加到歌单</text>
+      <text class="picker-close" catchtap="close">关闭</text>
+    </view>
+
+    <view class="create-row" bindtap="onCreate">
+      <view class="create-icon">＋</view>
+      <text class="create-text">新建歌单</text>
+    </view>
+
+    <scroll-view scroll-y class="picker-list">
+      <view class="loading-text" wx:if="{{loading}}">加载中…</view>
+      <view
+        class="item"
+        wx:for="{{playlists}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onPick"
+      >
+        <image class="item-cover" src="{{item.cover}}" mode="aspectFill" />
+        <view class="item-main">
+          <text class="item-name text-ellipsis">{{item.name}}</text>
+          <text class="item-sub">{{item.songCount || 0}} 首</text>
+        </view>
+        <text class="item-add">添加</text>
+      </view>
+
+      <view class="empty-text" wx:if="{{!loading && !playlists.length}}">
+        还没有创建歌单，点上方新建一个吧
+      </view>
+    </scroll-view>
+  </view>
+</view>

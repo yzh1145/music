@@ -1,0 +1,265 @@
+/* ==================== 云音乐 · 小程序全局样式 ==================== */
+/* 配色与 Web 端保持一致：主色 #ec4141，页面底色 #f6f6f6 */
+
+page {
+  background: #f6f6f6;
+  color: #333333;
+  font-size: 28rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-size: 28rpx;
+  line-height: 1.4;
+  border-radius: 0;
+}
+
+button::after {
+  border: none;
+}
+
+image {
+  display: block;
+}
+
+/* ==================== 布局 ==================== */
+.page {
+  padding: 24rpx 24rpx 40rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.section {
+  margin-bottom: 40rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  position: relative;
+  padding-left: 18rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4rpx;
+  bottom: 4rpx;
+  width: 8rpx;
+  border-radius: 4rpx;
+  background: #ec4141;
+}
+
+.section-more {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==================== 文本 ==================== */
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.text-muted {
+  color: #999999;
+}
+
+.text-secondary {
+  color: #666666;
+}
+
+.text-red {
+  color: #ec4141;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================== 按钮 ==================== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 76rpx;
+  padding: 0 32rpx;
+  border-radius: 38rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: #ec4141;
+  color: #ffffff;
+}
+
+.btn-primary.is-disabled {
+  background: #f3a5a5;
+}
+
+.btn-ghost {
+  background: #ffffff;
+  border: 1rpx solid #e6e6e6;
+  color: #333333;
+}
+
+.btn-soft {
+  background: #fdecec;
+  color: #ec4141;
+}
+
+.btn-sm {
+  height: 56rpx;
+  padding: 0 22rpx;
+  border-radius: 28rpx;
+  font-size: 24rpx;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-hover {
+  opacity: 0.82;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+}
+
+/* ==================== 通用小组件 ==================== */
+.tag {
+  flex-shrink: 0;
+  padding: 0 10rpx;
+  border-radius: 6rpx;
+  background: #fdecec;
+  color: #ec4141;
+  font-size: 20rpx;
+  line-height: 32rpx;
+}
+
+.divider {
+  height: 1rpx;
+  background: #f0f0f0;
+}
+
+.chevron {
+  color: #c4c4c4;
+  font-size: 30rpx;
+  line-height: 1;
+}
+
+.safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ==================== 播放状态动画 ==================== */
+@keyframes music-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: music-spin 20s linear infinite;
+}
+
+.spin-paused {
+  animation-play-state: paused;
+}
+
+@keyframes bar-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* ==================== 加载 / 骨架 ==================== */
+.skeleton {
+  background: linear-gradient(90deg, #eeeeee 25%, #f5f5f5 37%, #eeeeee 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+  border-radius: 12rpx;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.loading-more {
+  padding: 28rpx 0;
+  color: #999999;
+  font-size: 24rpx;
+  text-align: center;
+}

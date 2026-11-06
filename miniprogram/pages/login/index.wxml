@@ -1,0 +1,78 @@
+<view class="login-page">
+  <view class="login-head">
+    <image class="logo" src="/assets/images/logo.png" mode="aspectFill" />
+    <text class="brand">云音乐</text>
+    <text class="slogan">发现好音乐，记录每一次心动</text>
+  </view>
+
+  <view class="card login-card">
+    <view class="tabs">
+      <view class="tab {{mode === 'login' ? 'active' : ''}}" data-mode="login" bindtap="switchMode">登录</view>
+      <view class="tab {{mode === 'register' ? 'active' : ''}}" data-mode="register" bindtap="switchMode">注册</view>
+    </view>
+
+    <view class="field">
+      <text class="label">用户名</text>
+      <input
+        class="input"
+        value="{{username}}"
+        maxlength="20"
+        placeholder="3-20 位字母、数字或下划线"
+        placeholder-class="ph"
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <view class="field" wx:if="{{mode === 'register'}}">
+      <text class="label">昵称</text>
+      <input
+        class="input"
+        value="{{nickname}}"
+        maxlength="20"
+        placeholder="不填默认使用用户名"
+        placeholder-class="ph"
+        bindinput="onNicknameInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="label">密码</text>
+      <input
+        class="input"
+        password="{{true}}"
+        value="{{password}}"
+        maxlength="20"
+        placeholder="6-20 位"
+        placeholder-class="ph"
+        bindinput="onPasswordInput"
+      />
+    </view>
+
+    <view class="field" wx:if="{{mode === 'register'}}">
+      <text class="label">确认密码</text>
+      <input
+        class="input"
+        password="{{true}}"
+        value="{{confirm}}"
+        maxlength="20"
+        placeholder="再次输入密码"
+        placeholder-class="ph"
+        bindinput="onConfirmInput"
+      />
+    </view>
+
+    <view class="btn btn-primary btn-block submit {{loading ? 'is-disabled' : ''}}" bindtap="submit">
+      {{loading ? '请稍候…' : (mode === 'register' ? '注册并登录' : '登录')}}
+    </view>
+
+    <view class="demo" wx:if="{{mode === 'login'}}">
+      <text class="demo-title">演示账号（点击自动填入）</text>
+      <view class="demo-row">
+        <view class="demo-chip" data-username="test" data-password="123456" bindtap="fillDemo">test / 123456</view>
+        <view class="demo-chip" data-username="admin" data-password="123456" bindtap="fillDemo">admin / 123456</view>
+      </view>
+    </view>
+  </view>
+
+  <text class="skip" bindtap="goBack">暂不登录，先逛逛</text>
+</view>

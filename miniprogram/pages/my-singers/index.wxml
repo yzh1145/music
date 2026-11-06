@@ -1,0 +1,31 @@
+<view class="page singers-page">
+  <view class="head">
+    <text class="head-title">关注的歌手</text>
+    <text class="head-count">{{singers.length}} 位</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="grid" wx:elif="{{singers.length}}">
+    <view
+      class="singer"
+      wx:for="{{singers}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-name="{{item.name}}"
+      bindtap="openSinger"
+      bindtouchstart="onTouchStart"
+      bindlongpress="onLongPress"
+    >
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <text class="name text-ellipsis">{{item.name}}</text>
+      <text class="sub">{{item.songCount}} 首歌曲</text>
+    </view>
+  </view>
+
+  <empty wx:else text="还没有关注的歌手" />
+
+  <view class="hint" wx:if="{{singers.length}}">长按歌手可取消关注</view>
+
+  <player-bar />
+</view>

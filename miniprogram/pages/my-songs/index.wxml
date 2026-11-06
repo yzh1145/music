@@ -1,0 +1,31 @@
+<view class="page songs-page">
+  <view class="head">
+    <view class="head-left">
+      <text class="head-title">{{title}}</text>
+      <text class="head-count">{{songs.length}} 首</text>
+    </view>
+    <view class="head-actions">
+      <view class="btn btn-soft btn-sm" wx:if="{{songs.length}}" bindtap="playAll">播放全部</view>
+      <view class="btn btn-ghost btn-sm" wx:if="{{isHistory && songs.length}}" bindtap="clearHistory">清空</view>
+    </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="card panel" wx:elif="{{songs.length}}">
+    <song-item
+      wx:for="{{songs}}"
+      wx:key="id"
+      song="{{item}}"
+      index="{{index}}"
+      active="{{playerSongId === item.id}}"
+      playing="{{playerPlaying}}"
+      sub-text="{{item.playTimeText || ''}}"
+      bind:play="onPlaySong"
+    />
+  </view>
+
+  <empty wx:else text="{{isHistory ? '还没有播放记录' : '还没有喜欢的歌曲，去发现好音乐吧'}}" />
+
+  <player-bar />
+</view>

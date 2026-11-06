@@ -1,0 +1,288 @@
+.player-root {
+  position: relative;
+  z-index: 300;
+}
+
+.spacer {
+  height: 112rpx;
+  height: calc(112rpx + constant(safe-area-inset-bottom));
+  height: calc(112rpx + env(safe-area-inset-bottom));
+}
+
+.player-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  padding: 0 18rpx;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(255, 255, 255, 0.97);
+  border-top: 1rpx solid #f0f0f0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.progress-track {
+  position: relative;
+  height: 3rpx;
+  margin: 0 -18rpx;
+  background: #f2f2f2;
+}
+
+.progress-value {
+  height: 100%;
+  background: #ec4141;
+  transition: width 0.25s linear;
+}
+
+.bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  height: 108rpx;
+}
+
+.cover {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #eeeeee;
+  border: 3rpx solid rgba(0, 0, 0, 0.06);
+}
+
+.meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  min-width: 0;
+}
+
+.name {
+  min-width: 0;
+  color: #333333;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.liked {
+  flex-shrink: 0;
+  color: #ec4141;
+  font-size: 20rpx;
+}
+
+.singer {
+  display: block;
+  margin-top: 4rpx;
+  color: #999999;
+  font-size: 20rpx;
+}
+
+.like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 64rpx;
+  flex-shrink: 0;
+  color: #b8b8be;
+  font-size: 30rpx;
+}
+
+.liked-text {
+  color: #ec4141;
+}
+
+.mode {
+  flex-shrink: 0;
+  padding: 4rpx 10rpx;
+  border: 1rpx solid #e4e4e8;
+  border-radius: 18rpx;
+  color: #88888e;
+  font-size: 18rpx;
+  line-height: 1.4;
+}
+
+.play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #ec4141;
+}
+
+.play-triangle {
+  width: 0;
+  height: 0;
+  margin-left: 5rpx;
+  border-top: 13rpx solid transparent;
+  border-bottom: 13rpx solid transparent;
+  border-left: 19rpx solid #ffffff;
+}
+
+.pause-bars {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.pause-bar {
+  width: 7rpx;
+  height: 26rpx;
+  border-radius: 3rpx;
+  background: #ffffff;
+}
+
+.next-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52rpx;
+  height: 64rpx;
+  flex-shrink: 0;
+}
+
+.next-triangle {
+  width: 0;
+  height: 0;
+  border-top: 12rpx solid transparent;
+  border-bottom: 12rpx solid transparent;
+  border-left: 16rpx solid #333333;
+}
+
+.next-bar {
+  width: 4rpx;
+  height: 24rpx;
+  margin-left: 3rpx;
+  border-radius: 2rpx;
+  background: #333333;
+}
+
+.queue-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 64rpx;
+  flex-shrink: 0;
+  color: #666666;
+  font-size: 38rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ==================== 播放队列 ==================== */
+.queue-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 600;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.queue-panel {
+  background: #ffffff;
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 24rpx 0 12rpx;
+  padding-bottom: 12rpx;
+  padding-bottom: calc(12rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(12rpx + env(safe-area-inset-bottom));
+}
+
+.queue-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28rpx 18rpx;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+
+.queue-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.queue-close {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.queue-list {
+  max-height: 56vh;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 14rpx 28rpx;
+}
+
+.queue-item.active .queue-name {
+  color: #ec4141;
+  font-weight: 600;
+}
+
+.queue-index {
+  width: 40rpx;
+  flex-shrink: 0;
+  color: #b0b0b6;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+.queue-cover {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  background: #eeeeee;
+}
+
+.queue-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.queue-name {
+  display: block;
+  color: #333333;
+  font-size: 26rpx;
+}
+
+.queue-singer {
+  display: block;
+  margin-top: 2rpx;
+  color: #999999;
+  font-size: 20rpx;
+}
+
+.queue-time {
+  flex-shrink: 0;
+  color: #b0b0b6;
+  font-size: 20rpx;
+}
+
+@keyframes music-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

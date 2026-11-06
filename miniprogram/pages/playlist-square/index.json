@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "歌单广场",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "usingComponents": {
+    "playlist-card": "/components/playlist-card/index",
+    "player-bar": "/components/player-bar/index",
+    "empty": "/components/empty/index"
+  }
+}

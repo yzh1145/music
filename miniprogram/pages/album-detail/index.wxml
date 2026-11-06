@@ -1,0 +1,51 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page album-page">
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <block wx:elif="{{album}}">
+    <view class="hero">
+      <image class="hero-bg" src="{{album.cover}}" mode="aspectFill" />
+      <view class="hero-mask"></view>
+
+      <view class="hero-body">
+        <image class="cover" src="{{album.cover}}" mode="aspectFill" />
+
+        <text class="name">{{album.name}}</text>
+        <text class="type">专辑</text>
+
+        <view class="meta">
+          <text class="link" bindtap="openSinger">歌手：{{album.singerName}}</text>
+          <text>发行：{{fmt.date(album.publishDate)}}</text>
+          <text wx:if="{{album.company}}">{{album.company}}</text>
+        </view>
+
+        <text class="intro" wx:if="{{album.intro}}">{{album.intro}}</text>
+
+        <view class="play-all" bindtap="playAll">播放全部（{{songs.length}}）</view>
+      </view>
+    </view>
+
+    <view class="card panel">
+      <view class="panel-head">
+        <text class="panel-title">歌曲列表</text>
+        <text class="panel-count">{{songs.length}} 首</text>
+      </view>
+      <song-item
+        wx:for="{{songs}}"
+        wx:key="id"
+        song="{{item}}"
+        index="{{index}}"
+        active="{{playerSongId === item.id}}"
+        playing="{{playerPlaying}}"
+        show-album="{{false}}"
+        bind:play="onPlaySong"
+      />
+      <empty wx:if="{{!songs.length}}" text="这张专辑还没有歌曲" />
+    </view>
+  </block>
+
+  <empty wx:elif="{{!loading}}" text="专辑不存在或已被删除" />
+
+  <player-bar />
+</view>

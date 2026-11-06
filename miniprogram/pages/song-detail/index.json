@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "正在播放",
+  "navigationBarBackgroundColor": "#16161a",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#16161a",
+  "usingComponents": {
+    "comment-list": "/components/comment-list/index",
+    "playlist-picker": "/components/playlist-picker/index",
+    "empty": "/components/empty/index"
+  }
+}

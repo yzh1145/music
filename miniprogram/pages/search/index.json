@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "搜索",
+  "usingComponents": {
+    "song-item": "/components/song-item/index",
+    "playlist-card": "/components/playlist-card/index",
+    "player-bar": "/components/player-bar/index",
+    "empty": "/components/empty/index"
+  }
+}

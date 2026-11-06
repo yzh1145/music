@@ -1,0 +1,92 @@
+<view class="page edit-page">
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <block wx:else>
+    <view class="card form-card">
+      <view class="field">
+        <text class="label">歌曲名</text>
+        <input class="input" value="{{form.name}}" maxlength="100" placeholder="必填" placeholder-class="ph" bindinput="onNameInput" />
+      </view>
+
+      <picker mode="selector" range="{{singerNames}}" value="{{singerIndex}}" bindchange="onSingerChange">
+        <view class="field">
+          <text class="label">歌手</text>
+          <view class="picker-value">
+            <text class="{{singerNames.length ? '' : 'ph'}}">{{singerNames[singerIndex] || '请选择歌手'}}</text>
+            <text class="chevron">›</text>
+          </view>
+        </view>
+      </picker>
+
+      <picker mode="selector" range="{{albumNames}}" value="{{albumIndex}}" bindchange="onAlbumChange">
+        <view class="field">
+          <text class="label">专辑</text>
+          <view class="picker-value">
+            <text>{{albumNames[albumIndex] || '无专辑'}}</text>
+            <text class="chevron">›</text>
+          </view>
+        </view>
+      </picker>
+
+      <picker mode="selector" range="{{categoryNames}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="field">
+          <text class="label">分类</text>
+          <view class="picker-value">
+            <text class="{{categoryNames.length ? '' : 'ph'}}">{{categoryNames[categoryIndex] || '请选择分类'}}</text>
+            <text class="chevron">›</text>
+          </view>
+        </view>
+      </picker>
+
+      <view class="field">
+        <text class="label">封面地址</text>
+        <input class="input" value="{{form.cover}}" placeholder="/images/album/a1.png" placeholder-class="ph" bindinput="onCoverInput" />
+      </view>
+
+      <image class="cover-preview" wx:if="{{coverPreview}}" src="{{coverPreview}}" mode="aspectFill" />
+
+      <view class="field">
+        <text class="label">音频地址</text>
+        <input class="input" value="{{form.audioUrl}}" placeholder="/audio/track-1.wav" placeholder-class="ph" bindinput="onAudioInput" />
+      </view>
+
+      <view class="field">
+        <text class="label">时长（秒）</text>
+        <input class="input" type="number" value="{{form.duration}}" placeholder="例如 38" placeholder-class="ph" bindinput="onDurationInput" />
+      </view>
+
+      <view class="field">
+        <text class="label">推荐</text>
+        <view class="switch-value">
+          <switch checked="{{form.isRecommend}}" color="#ec4141" bindchange="onRecommendChange" />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="label">上架</text>
+        <view class="switch-value">
+          <switch checked="{{form.status}}" color="#ec4141" bindchange="onStatusChange" />
+        </view>
+      </view>
+    </view>
+
+    <view class="card form-card">
+      <view class="field field-column">
+        <text class="label">歌词（LRC 格式）</text>
+        <textarea
+          class="textarea lyric"
+          value="{{form.lyric}}"
+          placeholder="[00:00.00] 第一句歌词"
+          placeholder-class="ph"
+          bindinput="onLyricInput"
+        />
+      </view>
+    </view>
+
+    <view class="btn btn-primary btn-block save-btn {{saving ? 'is-disabled' : ''}}" bindtap="save">
+      {{saving ? '保存中…' : '保存歌曲'}}
+    </view>
+
+    <view class="hint">提示：音频与封面既可以是后端静态资源相对路径（/audio/xxx.wav），也可以是完整 https 地址。</view>
+  </block>
+</view>

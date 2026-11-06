@@ -1,0 +1,65 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/playlist-square/index",
+    "pages/search/index",
+    "pages/my/index",
+    "pages/playlist-detail/index",
+    "pages/song-detail/index",
+    "pages/singer-detail/index",
+    "pages/album-detail/index",
+    "pages/my-songs/index",
+    "pages/my-playlists/index",
+    "pages/my-singers/index",
+    "pages/profile/index",
+    "pages/settings/index",
+    "pages/login/index",
+    "pages/admin/index",
+    "pages/admin-song-edit/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#c20c0c",
+    "navigationBarTitleText": "云音乐",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f6f6f6"
+  },
+  "tabBar": {
+    "color": "#8a8a90",
+    "selectedColor": "#ec4141",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "发现",
+        "iconPath": "assets/icons/tabbar-home.png",
+        "selectedIconPath": "assets/icons/tabbar-home-active.png"
+      },
+      {
+        "pagePath": "pages/playlist-square/index",
+        "text": "歌单",
+        "iconPath": "assets/icons/tabbar-playlist.png",
+        "selectedIconPath": "assets/icons/tabbar-playlist-active.png"
+      },
+      {
+        "pagePath": "pages/search/index",
+        "text": "搜索",
+        "iconPath": "assets/icons/tabbar-search.png",
+        "selectedIconPath": "assets/icons/tabbar-search-active.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "assets/icons/tabbar-user.png",
+        "selectedIconPath": "assets/icons/tabbar-user-active.png"
+      }
+    ]
+  },
+  "requiredBackgroundModes": [
+    "audio"
+  ],
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

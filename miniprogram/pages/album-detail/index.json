@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "专辑",
+  "usingComponents": {
+    "song-item": "/components/song-item/index",
+    "player-bar": "/components/player-bar/index",
+    "empty": "/components/empty/index"
+  }
+}

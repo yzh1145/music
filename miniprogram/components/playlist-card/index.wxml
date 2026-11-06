@@ -1,0 +1,13 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="playlist-card" bindtap="onTap" bindtouchstart="onTouchStart" bindlongpress="onLongPress">
+  <view class="cover-wrap">
+    <image class="cover" src="{{playlist.cover}}" mode="aspectFill" lazy-load />
+    <view class="play-count">
+      <view class="triangle"></view>
+      <text>{{fmt.count(playlist.playCount)}}</text>
+    </view>
+  </view>
+  <text class="name text-clamp-2">{{playlist.name}}</text>
+  <text class="creator text-ellipsis" wx:if="{{showCreator}}">{{playlist.creatorName || '云音乐用户'}}</text>
+</view>

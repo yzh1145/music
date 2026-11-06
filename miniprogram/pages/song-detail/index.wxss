@@ -1,0 +1,448 @@
+.song-page {
+  min-height: 100vh;
+  background: #f6f6f6;
+}
+
+.loading {
+  padding: 160rpx 0;
+  color: #999999;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+/* ==================== 黑胶区 ==================== */
+.dark-area {
+  position: relative;
+  overflow: hidden;
+  padding: 30rpx 30rpx 20rpx;
+}
+
+.bg {
+  position: absolute;
+  top: -80rpx;
+  left: -80rpx;
+  width: 150%;
+  height: 900rpx;
+  filter: blur(25px) brightness(0.35) saturate(1.3);
+}
+
+.bg-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(22, 22, 26, 0.55) 0%, rgba(22, 22, 26, 0.82) 60%, #16161a 100%);
+}
+
+.content {
+  position: relative;
+  color: #ffffff;
+}
+
+.disc-wrap {
+  position: relative;
+  width: 420rpx;
+  height: 420rpx;
+  margin: 10rpx auto 0;
+}
+
+.disc {
+  width: 100%;
+  height: 100%;
+  padding: 70rpx;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #26262a 0%, #0b0b0d 62%, #1c1c20 100%);
+  box-shadow: 0 18rpx 50rpx rgba(0, 0, 0, 0.55), 0 0 0 2rpx rgba(255, 255, 255, 0.06);
+}
+
+.spinning {
+  animation: music-spin 22s linear infinite;
+}
+
+.paused {
+  animation-play-state: paused;
+}
+
+.disc-cover {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5rpx #111111, 0 0 0 7rpx rgba(255, 255, 255, 0.08);
+}
+
+.disc-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18rpx;
+  height: 18rpx;
+  margin: -9rpx 0 0 -9rpx;
+  border-radius: 50%;
+  background: #0b0b0d;
+  box-shadow: 0 0 0 4rpx rgba(255, 255, 255, 0.14);
+}
+
+/* 唱针：播放时落到唱片上 */
+.needle {
+  position: absolute;
+  top: -14rpx;
+  right: 6rpx;
+  width: 12rpx;
+  height: 210rpx;
+  border-radius: 8rpx;
+  background: linear-gradient(180deg, #f2f2f2, #b8b8b8);
+  transform-origin: 6rpx 12rpx;
+  transform: rotate(-34deg);
+  transition: transform 0.45s ease;
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.4);
+}
+
+.needle::before {
+  content: '';
+  position: absolute;
+  top: -14rpx;
+  left: -14rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #ececec;
+  border: 4rpx solid #b5b5b5;
+  box-sizing: border-box;
+}
+
+.needle.down {
+  transform: rotate(-4deg);
+}
+
+/* ==================== 歌曲信息 ==================== */
+.song-title {
+  display: block;
+  margin-top: 34rpx;
+  font-size: 38rpx;
+  font-weight: 700;
+  text-align: center;
+  word-break: break-all;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 14rpx;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 22rpx;
+}
+
+.meta-link {
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.25);
+}
+
+.meta-split {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 28rpx;
+  margin-top: 14rpx;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 21rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================== 控制区 ==================== */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48rpx;
+  margin-top: 32rpx;
+}
+
+.side-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.icon-prev,
+.icon-next {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-top: 14rpx solid transparent;
+  border-bottom: 14rpx solid transparent;
+}
+
+.icon-prev {
+  border-right: 20rpx solid #ffffff;
+  margin-left: 6rpx;
+}
+
+.icon-next {
+  border-left: 20rpx solid #ffffff;
+  margin-right: 6rpx;
+}
+
+.icon-prev::before,
+.icon-next::before {
+  content: '';
+  position: absolute;
+  top: -20rpx;
+  width: 5rpx;
+  height: 40rpx;
+  border-radius: 3rpx;
+  background: #ffffff;
+}
+
+.icon-prev::before {
+  left: -28rpx;
+}
+
+.icon-next::before {
+  right: -28rpx;
+}
+
+.play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 124rpx;
+  height: 124rpx;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 10rpx 26rpx rgba(0, 0, 0, 0.35);
+}
+
+.icon-play {
+  width: 0;
+  height: 0;
+  margin-left: 8rpx;
+  border-top: 20rpx solid transparent;
+  border-bottom: 20rpx solid transparent;
+  border-left: 30rpx solid #c20c0c;
+}
+
+.icon-pause {
+  display: flex;
+  gap: 10rpx;
+}
+
+.icon-pause-bar {
+  width: 10rpx;
+  height: 38rpx;
+  border-radius: 4rpx;
+  background: #c20c0c;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 24rpx;
+}
+
+.time {
+  width: 76rpx;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20rpx;
+  text-align: center;
+}
+
+.slider {
+  flex: 1;
+  margin: 0;
+}
+
+.tool-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 22rpx;
+  padding-bottom: 6rpx;
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  padding: 8rpx 18rpx;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 20rpx;
+}
+
+.tool.active {
+  color: #ff6b6b;
+}
+
+.tool-icon {
+  font-size: 32rpx;
+  line-height: 1;
+}
+
+/* ==================== 歌词 ==================== */
+.lyric-area {
+  background: #16161a;
+  padding: 10rpx 30rpx 20rpx;
+}
+
+.lyric-scroll {
+  height: 560rpx;
+}
+
+.lyric-line {
+  overflow: hidden;
+  height: 84rpx;
+  padding: 0 30rpx;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 27rpx;
+  line-height: 84rpx;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.lyric-line.active {
+  color: #ffffff;
+  font-size: 29rpx;
+  font-weight: 600;
+  transform: scale(1.04);
+}
+
+.lyric-empty {
+  padding: 120rpx 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 26rpx;
+  text-align: center;
+}
+
+/* ==================== 评论 ==================== */
+.comment-area {
+  padding: 26rpx 24rpx 40rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  border-radius: 28rpx 28rpx 0 0;
+  background: #f6f6f6;
+}
+
+.comment-card {
+  padding: 24rpx;
+}
+
+/* ==================== 队列 ==================== */
+.queue-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.queue-panel {
+  padding: 24rpx 0 12rpx;
+  padding-bottom: 12rpx;
+  padding-bottom: calc(12rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(12rpx + env(safe-area-inset-bottom));
+  border-radius: 28rpx 28rpx 0 0;
+  background: #ffffff;
+}
+
+.queue-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28rpx 18rpx;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+
+.queue-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.queue-close {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.queue-list {
+  max-height: 56vh;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 14rpx 28rpx;
+}
+
+.queue-item.active .queue-name {
+  color: #ec4141;
+  font-weight: 600;
+}
+
+.queue-index {
+  width: 40rpx;
+  flex-shrink: 0;
+  color: #b0b0b6;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+.queue-cover {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  background: #eeeeee;
+}
+
+.queue-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.queue-name {
+  display: block;
+  color: #333333;
+  font-size: 26rpx;
+}
+
+.queue-singer {
+  display: block;
+  margin-top: 2rpx;
+  color: #999999;
+  font-size: 20rpx;
+}
+
+.queue-time {
+  flex-shrink: 0;
+  color: #b0b0b6;
+  font-size: 20rpx;
+}
+
+@keyframes music-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

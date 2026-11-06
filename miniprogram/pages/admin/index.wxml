@@ -1,0 +1,111 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page admin">
+  <view class="tabs">
+    <view class="tab {{activeTab === 'stats' ? 'active' : ''}}" data-tab="stats" bindtap="switchTab">数据</view>
+    <view class="tab {{activeTab === 'users' ? 'active' : ''}}" data-tab="users" bindtap="switchTab">用户</view>
+    <view class="tab {{activeTab === 'songs' ? 'active' : ''}}" data-tab="songs" bindtap="switchTab">歌曲</view>
+  </view>
+
+  <!-- 数据看板 -->
+  <block wx:if="{{activeTab === 'stats'}}">
+    <view class="card stats-card" wx:if="{{stats}}">
+      <view class="stat-item" wx:for="{{statItems}}" wx:key="label">
+        <text class="stat-value">{{fmt.count(item.value)}}</text>
+        <text class="stat-label">{{item.label}}</text>
+      </view>
+    </view>
+    <view class="loading" wx:elif="{{loadingStats}}">加载中…</view>
+
+    <view class="card tip-card">
+      <text class="tip-title">管理提示</text>
+      <text class="tip">小程序端提供数据看板、用户管理与歌曲维护；歌手、专辑、歌单、轮播图的完整增删改查建议在 Web 后台操作。</text>
+    </view>
+  </block>
+
+  <!-- 用户管理 -->
+  <block wx:elif="{{activeTab === 'users'}}">
+    <view class="search-row">
+      <input
+        class="search-input"
+        value="{{userKeyword}}"
+        placeholder="搜索用户名或昵称"
+        placeholder-class="ph"
+        confirm-type="search"
+        bindinput="onUserKeyword"
+        bindconfirm="searchUsers"
+      />
+      <view class="search-btn" bindtap="searchUsers">搜索</view>
+    </view>
+
+    <view class="list">
+      <view class="user-item card" wx:for="{{users}}" wx:key="id">
+        <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="user-main">
+          <view class="user-name-row">
+            <text class="user-name text-ellipsis">{{item.nickname}}</text>
+            <text class="badge {{item.role === 1 ? 'admin' : ''}}">{{item.role === 1 ? '管理员' : '用户'}}</text>
+            <text class="badge {{item.status === 1 ? 'ok' : 'off'}}">{{item.status === 1 ? '正常' : '已禁用'}}</text>
+          </view>
+          <text class="user-sub">@{{item.username}} · 注册于 {{fmt.date(item.createTime)}}</text>
+          <view class="user-actions">
+            <view class="mini-btn" data-index="{{index}}" catchtap="toggleUserRole">
+              {{item.role === 1 ? '取消管理员' : '设为管理员'}}
+            </view>
+            <view class="mini-btn danger" data-index="{{index}}" catchtap="toggleUserStatus">
+              {{item.status === 1 ? '禁用' : '启用'}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="loading" wx:if="{{loadingUsers}}">加载中…</view>
+      <empty wx:if="{{!loadingUsers && !users.length}}" text="没有找到用户" />
+      <view class="loading" wx:if="{{!loadingUsers && users.length && users.length >= userTotal}}">共 {{userTotal}} 个用户</view>
+    </view>
+  </block>
+
+  <!-- 歌曲管理 -->
+  <block wx:elif="{{activeTab === 'songs'}}">
+    <view class="song-toolbar">
+      <view class="search-row flex-1">
+        <input
+          class="search-input"
+          value="{{songKeyword}}"
+          placeholder="搜索歌曲名或歌手"
+          placeholder-class="ph"
+          confirm-type="search"
+          bindinput="onSongKeyword"
+          bindconfirm="searchSongs"
+        />
+        <view class="search-btn" bindtap="searchSongs">搜索</view>
+      </view>
+      <view class="btn btn-primary btn-sm" bindtap="addSong">新增</view>
+    </view>
+
+    <view class="list">
+      <view class="song-item card" wx:for="{{songs}}" wx:key="id">
+        <image class="song-cover" src="{{item.cover}}" mode="aspectFill" />
+        <view class="song-main">
+          <view class="song-name-row">
+            <text class="song-name text-ellipsis">{{item.name}}</text>
+            <text class="badge {{item.status === 1 ? 'ok' : 'off'}}">{{item.status === 1 ? '上架' : '下架'}}</text>
+            <text class="badge recommend" wx:if="{{item.isRecommend === 1}}">推荐</text>
+          </view>
+          <text class="song-sub text-ellipsis">{{item.singerName}} · {{item.albumName || '无专辑'}}</text>
+          <text class="song-sub">播放 {{fmt.count(item.playCount)}} · 喜欢 {{fmt.count(item.likeCount)}} · {{fmt.duration(item.duration)}}</text>
+          <view class="song-actions">
+            <view class="mini-btn" data-id="{{item.id}}" catchtap="editSong">编辑</view>
+            <view class="mini-btn danger" data-index="{{index}}" catchtap="deleteSong">删除</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="loading" wx:if="{{loadingSongs}}">加载中…</view>
+      <empty wx:if="{{!loadingSongs && !songs.length}}" text="没有找到歌曲" />
+      <view class="loading" wx:if="{{!loadingSongs && songs.length && songs.length >= songTotal}}">共 {{songTotal}} 首歌曲</view>
+    </view>
+  </block>
+
+  <player-bar />
+</view>

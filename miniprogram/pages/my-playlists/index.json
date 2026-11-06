@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "我的歌单",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "playlist-card": "/components/playlist-card/index",
+    "player-bar": "/components/player-bar/index",
+    "empty": "/components/empty/index"
+  }
+}

@@ -1,0 +1,29 @@
+<view class="page square">
+  <view class="head">
+    <text class="head-title">歌单广场</text>
+    <text class="head-count">共 {{total}} 个歌单</text>
+  </view>
+
+  <scroll-view scroll-x class="category-bar" enhanced show-scrollbar="{{false}}">
+    <view
+      class="category {{activeCategory === item.name ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-name="{{item.name}}"
+      bindtap="changeCategory"
+    >
+      {{item.name}}
+    </view>
+  </scroll-view>
+
+  <view class="grid" wx:if="{{playlists.length}}">
+    <playlist-card wx:for="{{playlists}}" wx:key="id" playlist="{{item}}" />
+  </view>
+
+  <empty wx:if="{{!loading && !playlists.length}}" text="这个分类下还没有歌单" />
+
+  <view class="loading-more" wx:if="{{loading}}">加载中…</view>
+  <view class="loading-more" wx:elif="{{!hasMore && playlists.length}}">没有更多了</view>
+
+  <player-bar />
+</view>

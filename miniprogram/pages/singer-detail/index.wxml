@@ -1,0 +1,69 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page singer-page">
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <block wx:elif="{{singer}}">
+    <view class="hero">
+      <image class="hero-bg" src="{{singer.cover || singer.avatar}}" mode="aspectFill" />
+      <view class="hero-mask"></view>
+
+      <view class="hero-body">
+        <image class="avatar" src="{{singer.avatar}}" mode="aspectFill" />
+        <text class="name">{{singer.name}}</text>
+        <text class="type">歌手</text>
+
+        <view class="meta">
+          <text wx:if="{{singer.region}}">{{singer.region}}</text>
+          <text wx:if="{{singer.birthday}}">{{fmt.date(singer.birthday)}}</text>
+          <text>{{singer.songCount}} 首歌曲</text>
+          <text>{{singer.albumCount}} 张专辑</text>
+        </view>
+
+        <text class="intro" wx:if="{{singer.intro}}">{{singer.intro}}</text>
+
+        <view class="follow-btn {{singer.followed ? 'followed' : ''}}" bindtap="toggleFollow">
+          {{singer.followed ? '已关注' : '关注'}} {{fmt.count(singer.followCount)}}
+        </view>
+      </view>
+    </view>
+
+    <view class="card panel">
+      <view class="panel-head">
+        <text class="panel-title">热门歌曲</text>
+        <text class="play-all" bindtap="playAll">播放全部</text>
+      </view>
+      <song-item
+        wx:for="{{songs}}"
+        wx:key="id"
+        song="{{item}}"
+        index="{{index}}"
+        active="{{playerSongId === item.id}}"
+        playing="{{playerPlaying}}"
+        bind:play="onPlaySong"
+      />
+      <empty wx:if="{{!songs.length}}" text="这位歌手还没有歌曲" />
+    </view>
+
+    <view class="albums" wx:if="{{albums.length}}">
+      <view class="section-title">专辑</view>
+      <view class="album-grid">
+        <view
+          class="album"
+          wx:for="{{albums}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="openAlbum"
+        >
+          <image class="album-cover" src="{{item.cover}}" mode="aspectFill" />
+          <text class="album-name text-ellipsis">{{item.name}}</text>
+          <text class="album-meta">{{item.songCount}} 首 · {{fmt.date(item.publishDate)}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <empty wx:elif="{{!loading}}" text="歌手不存在或已被删除" />
+
+  <player-bar />
+</view>

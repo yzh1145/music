@@ -1,0 +1,58 @@
+/**
+ * WXML 中使用的格式化函数（WXS 语法：只能用 ES5 写法）
+ * 用法：<wxs module="fmt" src="../../utils/format.wxs" />
+ *      <text>{{fmt.count(item.playCount)}}</text>
+ *
+ * 注意：WXS 运行环境较精简，这里只用 Math、字符串拼接等最基础的语法，
+ * 不使用 parseInt / toFixed，避免不同基础库版本行为不一致。
+ */
+function pad2(value) {
+  var number = Math.floor((value - 0) || 0)
+  if (number < 0) number = 0
+  return (number < 10 ? '0' : '') + number
+}
+
+function duration(seconds) {
+  var value = (seconds - 0) || 0
+  if (value < 0) value = 0
+  return pad2(Math.floor(value / 60)) + ':' + pad2(Math.floor(value % 60))
+}
+
+/** 保留一位小数，整数补 .0，与 Web 端 toFixed(1) 的显示一致 */
+function oneDecimal(number) {
+  var rounded = Math.round(number * 10) / 10
+  var text = '' + rounded
+  if (text.indexOf('.') === -1) text += '.0'
+  return text
+}
+
+function count(value) {
+  var number = (value - 0) || 0
+  if (number >= 100000000) return oneDecimal(number / 100000000) + '亿'
+  if (number >= 10000) return oneDecimal(number / 10000) + '万'
+  return '' + Math.floor(number)
+}
+
+function date(value) {
+  if (!value) return ''
+  return ('' + value).substring(0, 10)
+}
+
+function dateTime(value) {
+  if (!value) return ''
+  return ('' + value).substring(0, 16)
+}
+
+function index(value) {
+  var number = Math.floor((value - 0) || 0) + 1
+  return (number < 10 ? '0' : '') + number
+}
+
+module.exports = {
+  pad2: pad2,
+  duration: duration,
+  count: count,
+  date: date,
+  dateTime: dateTime,
+  index: index
+}

@@ -1,0 +1,216 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page search-page">
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <view class="input-wrap">
+      <view class="search-icon"></view>
+      <input
+        class="input"
+        value="{{keyword}}"
+        placeholder="搜索歌曲、歌手、歌单、专辑"
+        placeholder-class="ph"
+        confirm-type="search"
+        bindinput="onInput"
+        bindconfirm="onConfirm"
+      />
+      <view class="clear" wx:if="{{keyword}}" bindtap="onClear">×</view>
+    </view>
+    <view class="search-btn" bindtap="onConfirm">搜索</view>
+  </view>
+
+  <!-- 搜索前：历史与热门 -->
+  <block wx:if="{{!searched}}">
+    <view class="card block" wx:if="{{history.length}}">
+      <view class="block-head">
+        <text class="block-title">搜索历史</text>
+        <text class="clear-all" bindtap="clearHistory">清空</text>
+      </view>
+      <view class="chips">
+        <view
+          class="chip"
+          wx:for="{{history}}"
+          wx:key="*this"
+          data-keyword="{{item}}"
+          bindtap="onHistoryTap"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="card block">
+      <view class="block-head">
+        <text class="block-title">热门搜索</text>
+      </view>
+      <view class="chips">
+        <view
+          class="chip hot"
+          wx:for="{{hotKeywords}}"
+          wx:key="*this"
+          data-keyword="{{item}}"
+          bindtap="onHistoryTap"
+        >{{item}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 搜索结果 -->
+  <block wx:else>
+    <view class="tabs">
+      <view class="tab {{activeTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">综合</view>
+      <view class="tab {{activeTab === 'song' ? 'active' : ''}}" data-tab="song" bindtap="switchTab">
+        单曲 {{result.songTotal}}
+      </view>
+      <view class="tab {{activeTab === 'playlist' ? 'active' : ''}}" data-tab="playlist" bindtap="switchTab">
+        歌单 {{result.playlistTotal}}
+      </view>
+      <view class="tab {{activeTab === 'singer' ? 'active' : ''}}" data-tab="singer" bindtap="switchTab">
+        歌手 {{result.singerTotal}}
+      </view>
+      <view class="tab {{activeTab === 'album' ? 'active' : ''}}" data-tab="album" bindtap="switchTab">
+        专辑 {{result.albumTotal}}
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">搜索中…</view>
+
+    <empty wx:elif="{{!hasResult}}" text="没有找到与「{{searched}}」相关的内容" />
+
+    <block wx:else>
+      <!-- 综合 -->
+      <block wx:if="{{activeTab === 'all'}}">
+        <view class="block card" wx:if="{{result.songs.length}}">
+          <view class="block-head">
+            <text class="block-title">单曲</text>
+            <text class="section-more" data-tab="song" bindtap="switchTab">查看全部 ›</text>
+          </view>
+          <song-item
+            wx:for="{{songsPreview}}"
+            wx:key="id"
+            song="{{item}}"
+            index="{{index}}"
+            active="{{playerSongId === item.id}}"
+            playing="{{playerPlaying}}"
+            bind:play="onPlaySong"
+          />
+        </view>
+
+        <view class="block" wx:if="{{result.playlists.length}}">
+          <view class="block-head plain">
+            <text class="block-title">歌单</text>
+            <text class="section-more" data-tab="playlist" bindtap="switchTab">更多 ›</text>
+          </view>
+          <view class="grid grid-2">
+            <playlist-card
+              wx:for="{{playlistsPreview}}"
+              wx:key="id"
+              playlist="{{item}}"
+            />
+          </view>
+        </view>
+
+        <view class="block" wx:if="{{result.singers.length}}">
+          <view class="block-head plain">
+            <text class="block-title">歌手</text>
+            <text class="section-more" data-tab="singer" bindtap="switchTab">更多 ›</text>
+          </view>
+          <view class="grid grid-4">
+            <view
+              class="singer"
+              wx:for="{{singersPreview}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="openSinger"
+            >
+              <image class="singer-avatar" src="{{item.avatar}}" mode="aspectFill" />
+              <text class="singer-name text-ellipsis">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="block" wx:if="{{result.albums.length}}">
+          <view class="block-head plain">
+            <text class="block-title">专辑</text>
+            <text class="section-more" data-tab="album" bindtap="switchTab">更多 ›</text>
+          </view>
+          <view class="grid grid-3">
+            <view
+              class="album"
+              wx:for="{{albumsPreview}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="openAlbum"
+            >
+              <image class="album-cover" src="{{item.cover}}" mode="aspectFill" />
+              <text class="album-name text-ellipsis">{{item.name}}</text>
+              <text class="album-sub text-ellipsis">{{item.singerName}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 单曲 -->
+      <view class="card song-panel" wx:elif="{{activeTab === 'song'}}">
+        <song-item
+          wx:for="{{result.songs}}"
+          wx:key="id"
+          song="{{item}}"
+          index="{{index}}"
+          active="{{playerSongId === item.id}}"
+          playing="{{playerPlaying}}"
+          bind:play="onPlaySong"
+        />
+        <empty wx:if="{{!result.songs.length}}" text="没有找到歌曲" />
+      </view>
+
+      <!-- 歌单 -->
+      <view class="grid grid-2" wx:elif="{{activeTab === 'playlist'}}">
+        <playlist-card wx:for="{{result.playlists}}" wx:key="id" playlist="{{item}}" />
+      </view>
+
+      <!-- 歌手 -->
+      <view class="grid grid-4" wx:elif="{{activeTab === 'singer'}}">
+        <view
+          class="singer"
+          wx:for="{{result.singers}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="openSinger"
+        >
+          <image class="singer-avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <text class="singer-name text-ellipsis">{{item.name}}</text>
+          <text class="singer-sub">{{item.songCount}} 首歌曲</text>
+        </view>
+      </view>
+
+      <!-- 专辑 -->
+      <view class="grid grid-3" wx:elif="{{activeTab === 'album'}}">
+        <view
+          class="album"
+          wx:for="{{result.albums}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="openAlbum"
+        >
+          <image class="album-cover" src="{{item.cover}}" mode="aspectFill" />
+          <text class="album-name text-ellipsis">{{item.name}}</text>
+          <text class="album-sub text-ellipsis">{{item.singerName}} · {{fmt.count(item.songCount)}} 首</text>
+        </view>
+      </view>
+
+      <empty
+        wx:if="{{activeTab === 'playlist' && !result.playlists.length}}"
+        text="没有找到歌单"
+      />
+      <empty
+        wx:if="{{activeTab === 'singer' && !result.singers.length}}"
+        text="没有找到歌手"
+      />
+      <empty
+        wx:if="{{activeTab === 'album' && !result.albums.length}}"
+        text="没有找到专辑"
+      />
+    </block>
+  </block>
+
+  <player-bar />
+</view>

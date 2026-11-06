@@ -1,0 +1,82 @@
+<view class="page my">
+  <!-- 已登录 -->
+  <block wx:if="{{isLogin}}">
+    <view class="user-card">
+      <view class="user-glow"></view>
+      <view class="user-main">
+        <image class="avatar" src="{{avatar}}" mode="aspectFill" />
+        <view class="info">
+          <text class="nickname text-ellipsis">{{nickname}}</text>
+          <text class="username">@{{user.username}}</text>
+          <text class="signature text-ellipsis">{{signature || '这个人很懒，还没有留下签名'}}</text>
+        </view>
+        <view class="edit-btn" data-url="/pages/profile/index" data-key="profile" bindtap="onMenuTap">编辑</view>
+      </view>
+
+      <view class="stats">
+        <view class="stat">
+          <text class="stat-value">{{likeCount}}</text>
+          <text class="stat-label">喜欢</text>
+        </view>
+        <view class="stat-line"></view>
+        <view class="stat">
+          <text class="stat-value">{{playlistCount}}</text>
+          <text class="stat-label">歌单</text>
+        </view>
+        <view class="stat-line"></view>
+        <view class="stat">
+          <text class="stat-value">{{followCount}}</text>
+          <text class="stat-label">关注</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card menu">
+      <view
+        class="menu-item"
+        wx:for="{{menus}}"
+        wx:key="key"
+        data-url="{{item.url}}"
+        data-key="{{item.key}}"
+        bindtap="onMenuTap"
+        hover-class="menu-hover"
+      >
+        <view class="menu-icon" style="background: {{item.color}}">{{item.icon}}</view>
+        <text class="menu-label">{{item.label}}</text>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+
+    <view class="logout-btn" bindtap="onLogout">退出登录</view>
+  </block>
+
+  <!-- 未登录 -->
+  <block wx:else>
+    <view class="login-card">
+      <image class="logo" src="/assets/images/logo.png" mode="aspectFill" />
+      <text class="login-title">登录云音乐</text>
+      <text class="login-sub">登录后收藏喜欢的音乐、创建歌单、发表评论</text>
+      <view class="btn btn-primary btn-block login-btn" bindtap="openLogin">登录</view>
+      <view class="btn btn-ghost btn-block register-btn" bindtap="openRegister">注册新账号</view>
+      <text class="demo-tip">演示账号：test / 123456（管理员：admin / 123456）</text>
+    </view>
+
+    <view class="card menu">
+      <view
+        class="menu-item"
+        data-url="/pages/settings/index"
+        data-key="settings"
+        bindtap="onMenuTap"
+        hover-class="menu-hover"
+      >
+        <view class="menu-icon" style="background: #7f8c8d">⚙</view>
+        <text class="menu-label">设置</text>
+        <text class="chevron">›</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="version">云音乐 · 微信小程序 v{{version}}</view>
+
+  <player-bar />
+</view>

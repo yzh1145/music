@@ -1,0 +1,36 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="song-item {{active ? 'is-active' : ''}}" bindtap="onTap" hover-class="song-hover">
+  <view class="idx" wx:if="{{showIndex}}">
+    <view class="eq {{playing ? 'eq-playing' : ''}}" wx:if="{{active}}">
+      <view class="eq-bar"></view>
+      <view class="eq-bar"></view>
+      <view class="eq-bar"></view>
+    </view>
+    <text class="idx-text" wx:else>{{fmt.index(index)}}</text>
+  </view>
+
+  <image
+    wx:if="{{showCover}}"
+    class="cover"
+    src="{{song.cover}}"
+    mode="aspectFill"
+    lazy-load
+  />
+
+  <view class="main">
+    <view class="name-row">
+      <text class="name text-ellipsis">{{song.name}}</text>
+      <text class="tag" wx:if="{{song.isRecommend === 1}}">推荐</text>
+      <text class="liked" wx:if="{{song.liked}}">♥</text>
+    </view>
+    <view class="sub-row">
+      <text class="singer text-ellipsis" catchtap="onSinger">{{song.singerName}}</text>
+      <text class="album text-ellipsis" wx:if="{{showAlbum && song.albumName}}"> · {{song.albumName}}</text>
+      <text class="extra text-ellipsis" wx:if="{{subText}}"> · {{subText}}</text>
+    </view>
+  </view>
+
+  <text class="remove" wx:if="{{showRemove}}" catchtap="onRemove">移除</text>
+  <text class="duration num" wx:elif="{{showDuration}}">{{fmt.duration(song.duration)}}</text>
+</view>

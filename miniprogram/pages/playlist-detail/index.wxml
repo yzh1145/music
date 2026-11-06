@@ -1,0 +1,140 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page detail">
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <block wx:elif="{{playlist}}">
+    <view class="hero">
+      <image class="hero-bg" src="{{playlist.cover}}" mode="aspectFill" />
+      <view class="hero-mask"></view>
+
+      <view class="hero-body">
+        <image class="hero-cover" src="{{playlist.cover}}" mode="aspectFill" />
+
+        <view class="hero-info">
+          <view class="hero-type">
+            <text>歌单</text>
+            <text class="tag-white" wx:if="{{playlist.isRecommend === 1}}">推荐</text>
+          </view>
+          <text class="hero-title">{{playlist.name}}</text>
+
+          <view class="creator">
+            <image class="creator-avatar" src="{{playlist.creatorAvatar}}" mode="aspectFill" />
+            <text class="creator-name text-ellipsis">{{playlist.creatorName}}</text>
+            <text class="create-time">{{fmt.date(playlist.createTime)}} 创建</text>
+          </view>
+
+          <view class="hero-meta">
+            <text class="category">{{playlist.category}}</text>
+            <text>播放 {{fmt.count(playlist.playCount)}}</text>
+            <text>收藏 {{fmt.count(playlist.collectCount)}}</text>
+            <text>{{songs.length}} 首</text>
+          </view>
+
+          <text class="hero-intro" wx:if="{{playlist.intro}}">{{playlist.intro}}</text>
+
+          <view class="hero-actions">
+            <view class="btn btn-primary btn-sm" bindtap="playAll">播放全部</view>
+            <view class="btn btn-ghost btn-sm on-dark" bindtap="toggleCollect">
+              {{playlist.collected ? '已收藏' : '收藏'}}
+            </view>
+            <view class="btn btn-ghost btn-sm on-dark" wx:if="{{editable}}" bindtap="openAdd">添加歌曲</view>
+            <view class="btn btn-ghost btn-sm on-dark" wx:if="{{editable}}" bindtap="openEdit">编辑</view>
+            <view class="btn btn-ghost btn-sm on-dark" wx:if="{{editable}}" bindtap="removePlaylist">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card panel">
+      <view class="panel-head">
+        <text class="panel-title">歌曲列表</text>
+        <text class="panel-count">{{songs.length}} 首</text>
+      </view>
+
+      <song-item
+        wx:for="{{songs}}"
+        wx:key="id"
+        song="{{item}}"
+        index="{{index}}"
+        active="{{playerSongId === item.id}}"
+        playing="{{playerPlaying}}"
+        show-remove="{{editable}}"
+        bind:play="onPlaySong"
+        bind:remove="removeSong"
+      />
+      <empty wx:if="{{!songs.length}}" text="歌单里还没有歌曲" />
+    </view>
+  </block>
+
+  <empty wx:elif="{{!loading}}" text="歌单不存在或已被删除" />
+
+  <!-- 添加歌曲 -->
+  <view class="mask" wx:if="{{addVisible}}" catchtap="closeAdd" catchtouchmove="noop">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">添加歌曲</text>
+        <text class="sheet-close" catchtap="closeAdd">关闭</text>
+      </view>
+
+      <view class="search-row">
+        <input
+          class="search-input"
+          value="{{addKeyword}}"
+          placeholder="搜索歌曲名称或歌手"
+          placeholder-class="ph"
+          confirm-type="search"
+          bindinput="onAddInput"
+          bindconfirm="searchCandidates"
+        />
+        <view class="search-action" catchtap="searchCandidates">搜索</view>
+      </view>
+
+      <scroll-view scroll-y class="candidates">
+        <view class="candidate" wx:for="{{candidates}}" wx:key="id">
+          <image class="candidate-cover" src="{{item.cover}}" mode="aspectFill" />
+          <view class="candidate-info">
+            <text class="candidate-name text-ellipsis">{{item.name}}</text>
+            <text class="candidate-singer text-ellipsis">{{item.singerName}}</text>
+          </view>
+          <view class="candidate-add" data-id="{{item.id}}" catchtap="addCandidate">添加</view>
+        </view>
+        <view class="sheet-empty" wx:if="{{addLoading}}">搜索中…</view>
+        <view class="sheet-empty" wx:elif="{{!candidates.length}}">没有找到歌曲</view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 编辑歌单 -->
+  <view class="mask" wx:if="{{editVisible}}" catchtap="closeEdit" catchtouchmove="noop">
+    <view class="sheet edit-sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">编辑歌单</text>
+        <text class="sheet-close" catchtap="closeEdit">关闭</text>
+      </view>
+
+      <view class="field">
+        <text class="field-label">歌单名称</text>
+        <input class="field-input" value="{{editName}}" maxlength="50" bindinput="onEditName" />
+      </view>
+      <view class="field">
+        <text class="field-label">歌单简介</text>
+        <textarea
+          class="field-textarea"
+          value="{{editIntro}}"
+          maxlength="255"
+          placeholder="介绍一下这个歌单"
+          placeholder-class="ph"
+          bindinput="onEditIntro"
+        />
+      </view>
+
+      <view class="sheet-footer">
+        <view class="btn btn-ghost flex-1" catchtap="closeEdit">取消</view>
+        <view class="btn btn-primary flex-1" catchtap="saveEdit">保存</view>
+      </view>
+    </view>
+  </view>
+
+  <player-bar />
+</view>

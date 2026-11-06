@@ -1,0 +1,121 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="page home">
+  <!-- 搜索入口 -->
+  <view class="search-entry" bindtap="goSearch">
+    <view class="search-icon"></view>
+    <text class="search-placeholder">搜索歌曲、歌手、歌单</text>
+  </view>
+
+  <!-- 加载骨架 -->
+  <block wx:if="{{loading}}">
+    <view class="skeleton banner-skeleton"></view>
+    <view class="skeleton title-skeleton"></view>
+    <view class="skeleton-grid">
+      <view class="skeleton-grid-item" wx:for="{{skeletons}}" wx:key="*this">
+        <view class="skeleton cover-skeleton"></view>
+        <view class="skeleton line-skeleton"></view>
+      </view>
+    </view>
+    <view class="skeleton panel-skeleton"></view>
+  </block>
+
+  <block wx:else>
+    <!-- 轮播图 -->
+    <swiper
+      class="banner"
+      wx:if="{{banners.length}}"
+      circular
+      autoplay
+      interval="4500"
+      indicator-dots
+      indicator-color="rgba(255,255,255,0.4)"
+      indicator-active-color="#ffffff"
+    >
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <image
+          class="banner-image"
+          src="{{item.imageUrl}}"
+          mode="aspectFill"
+          data-index="{{index}}"
+          bindtap="onBannerTap"
+        />
+      </swiper-item>
+    </swiper>
+
+    <!-- 推荐歌单 -->
+    <view class="section" wx:if="{{recommendPlaylists.length}}">
+      <view class="section-head">
+        <view class="section-title">推荐歌单</view>
+        <text class="section-more" bindtap="goPlaylistSquare">更多 ›</text>
+      </view>
+      <scroll-view scroll-x class="h-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="h-item" wx:for="{{recommendPlaylists}}" wx:key="id">
+          <playlist-card playlist="{{item}}" />
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 推荐单曲 -->
+    <view class="section" wx:if="{{recommendSongs.length}}">
+      <view class="section-head">
+        <view class="section-title">推荐单曲</view>
+      </view>
+      <view class="card song-panel">
+        <song-item
+          wx:for="{{recommendSongs}}"
+          wx:key="id"
+          song="{{item}}"
+          index="{{index}}"
+          active="{{playerSongId === item.id}}"
+          playing="{{playerPlaying}}"
+          list-key="recommend"
+          bind:play="onPlaySong"
+        />
+      </view>
+    </view>
+
+    <!-- 新歌速递 -->
+    <view class="section" wx:if="{{newSongs.length}}">
+      <view class="section-head">
+        <view class="section-title">新歌速递</view>
+      </view>
+      <view class="card song-panel">
+        <song-item
+          wx:for="{{newSongs}}"
+          wx:key="id"
+          song="{{item}}"
+          index="{{index}}"
+          active="{{playerSongId === item.id}}"
+          playing="{{playerPlaying}}"
+          list-key="new"
+          bind:play="onPlaySong"
+        />
+      </view>
+    </view>
+
+    <!-- 热门歌手 -->
+    <view class="section" wx:if="{{hotSingers.length}}">
+      <view class="section-head">
+        <view class="section-title">热门歌手</view>
+      </view>
+      <view class="singer-grid">
+        <view
+          class="singer"
+          wx:for="{{hotSingers}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="openSinger"
+        >
+          <image class="singer-avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <text class="singer-name text-ellipsis">{{item.name}}</text>
+          <text class="singer-sub">{{item.songCount}} 首 · {{fmt.count(item.followCount)}} 关注</text>
+        </view>
+      </view>
+    </view>
+
+    <empty wx:if="{{!banners.length && !recommendPlaylists.length && !recommendSongs.length}}" text="数据加载失败，请下拉重试" />
+  </block>
+
+  <player-bar />
+</view>

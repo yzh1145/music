@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "后台管理",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "usingComponents": {
+    "empty": "/components/empty/index",
+    "player-bar": "/components/player-bar/index"
+  }
+}

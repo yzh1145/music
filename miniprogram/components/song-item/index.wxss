@@ -1,0 +1,145 @@
+.song-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 14rpx;
+  background: transparent;
+}
+
+.song-hover {
+  background: #f7f7f7;
+}
+
+.song-item.is-active .name {
+  color: #ec4141;
+  font-weight: 600;
+}
+
+.idx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44rpx;
+  flex-shrink: 0;
+}
+
+.idx-text {
+  color: #b0b0b6;
+  font-size: 24rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.cover {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+  background: #eeeeee;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  min-width: 0;
+}
+
+.name {
+  min-width: 0;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1.4;
+}
+
+.liked {
+  flex-shrink: 0;
+  color: #ec4141;
+  font-size: 22rpx;
+}
+
+.sub-row {
+  display: flex;
+  align-items: center;
+  margin-top: 6rpx;
+  color: #999999;
+  font-size: 22rpx;
+  min-width: 0;
+}
+
+.singer {
+  flex-shrink: 1;
+  max-width: 50%;
+}
+
+.album {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.extra {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.duration {
+  flex-shrink: 0;
+  color: #b0b0b6;
+  font-size: 22rpx;
+}
+
+.remove {
+  flex-shrink: 0;
+  padding: 6rpx 14rpx;
+  border: 1rpx solid #e6e6e6;
+  border-radius: 20rpx;
+  color: #999999;
+  font-size: 22rpx;
+}
+
+/* 当前播放：跳动的均衡器 */
+.eq {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4rpx;
+  width: 36rpx;
+  height: 30rpx;
+}
+
+.eq-bar {
+  width: 6rpx;
+  height: 100%;
+  border-radius: 3rpx;
+  background: #ec4141;
+  transform: scaleY(0.35);
+  transform-origin: bottom;
+}
+
+.eq-playing .eq-bar {
+  animation: bar-bounce 0.9s ease-in-out infinite;
+}
+
+.eq-playing .eq-bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.eq-playing .eq-bar:nth-child(3) {
+  animation-delay: 0.45s;
+}
+
+@keyframes bar-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}

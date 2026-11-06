@@ -1,0 +1,86 @@
+<view class="page my-playlists">
+  <view class="head">
+    <view class="head-left">
+      <text class="head-title">{{title}}</text>
+      <text class="head-count">{{playlists.length}} 个</text>
+    </view>
+    <view class="btn btn-primary btn-sm" wx:if="{{type === 'create'}}" bindtap="openCreate">新建歌单</view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <view class="grid" wx:elif="{{playlists.length}}">
+    <playlist-card
+      wx:for="{{playlists}}"
+      wx:key="id"
+      playlist="{{item}}"
+      show-creator="{{type === 'collect'}}"
+      bind:longpress="onLongPress"
+    />
+  </view>
+
+  <empty
+    wx:else
+    text="{{type === 'create' ? '还没有创建歌单' : '还没有收藏歌单'}}"
+  />
+
+  <view class="hint" wx:if="{{playlists.length}}">
+    {{type === 'create' ? '长按歌单卡片可删除歌单' : '长按歌单卡片可取消收藏'}}
+  </view>
+
+  <player-bar />
+
+  <!-- 新建歌单 -->
+  <view class="mask" wx:if="{{createVisible}}" catchtap="closeCreate" catchtouchmove="noop">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">新建歌单</text>
+        <text class="sheet-close" catchtap="closeCreate">关闭</text>
+      </view>
+
+      <view class="field">
+        <text class="field-label">歌单名称</text>
+        <input
+          class="field-input"
+          value="{{formName}}"
+          maxlength="50"
+          placeholder="给歌单起个名字"
+          placeholder-class="ph"
+          bindinput="onNameInput"
+        />
+      </view>
+
+      <view class="field">
+        <text class="field-label">歌单分类</text>
+        <picker
+          mode="selector"
+          range="{{categoryNames}}"
+          value="{{categoryIndex}}"
+          bindchange="onCategoryChange"
+        >
+          <view class="field-picker">
+            <text>{{categoryNames[categoryIndex] || '流行'}}</text>
+            <text class="chevron">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="field-label">歌单简介</text>
+        <textarea
+          class="field-textarea"
+          value="{{formIntro}}"
+          maxlength="255"
+          placeholder="简单介绍一下这个歌单"
+          placeholder-class="ph"
+          bindinput="onIntroInput"
+        />
+      </view>
+
+      <view class="sheet-footer">
+        <view class="btn btn-ghost flex-1" catchtap="closeCreate">取消</view>
+        <view class="btn btn-primary flex-1" catchtap="submitCreate">创建</view>
+      </view>
+    </view>
+  </view>
+</view>

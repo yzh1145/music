@@ -1,0 +1,149 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+
+<view class="song-page">
+  <view class="loading" wx:if="{{loading}}">加载中…</view>
+
+  <block wx:elif="{{song}}">
+    <!-- 黑胶播放器 -->
+    <view class="dark-area">
+      <image class="bg" src="{{song.cover}}" mode="aspectFill" />
+      <view class="bg-mask"></view>
+
+      <view class="content">
+        <view class="disc-wrap">
+          <view class="disc {{playing ? 'spinning' : 'spinning paused'}}">
+            <image class="disc-cover" src="{{song.cover}}" mode="aspectFill" />
+            <view class="disc-hole"></view>
+          </view>
+          <view class="needle {{playing ? 'down' : ''}}"></view>
+        </view>
+
+        <text class="song-title">{{song.name}}</text>
+
+        <view class="meta">
+          <text class="meta-link" bindtap="openAlbum">专辑：{{song.albumName || '未知专辑'}}</text>
+          <text class="meta-split">·</text>
+          <text class="meta-link" bindtap="openSinger">歌手：{{song.singerName}}</text>
+          <text class="meta-split" wx:if="{{song.categoryName}}">·</text>
+          <text wx:if="{{song.categoryName}}">{{song.categoryName}}</text>
+        </view>
+
+        <view class="stats">
+          <text>播放 {{fmt.count(song.playCount)}}</text>
+          <text>喜欢 {{fmt.count(song.likeCount)}}</text>
+          <text>评论 {{fmt.count(song.commentCount)}}</text>
+        </view>
+
+        <view class="controls">
+          <view class="side-btn" bindtap="onPrev">
+            <view class="icon-prev"></view>
+          </view>
+          <view class="play-btn" bindtap="onPlay">
+            <view class="icon-play" wx:if="{{!playing}}"></view>
+            <view class="icon-pause" wx:else>
+              <view class="icon-pause-bar"></view>
+              <view class="icon-pause-bar"></view>
+            </view>
+          </view>
+          <view class="side-btn" bindtap="onNext">
+            <view class="icon-next"></view>
+          </view>
+        </view>
+
+        <view class="progress-row">
+          <text class="time num">{{currentText}}</text>
+          <slider
+            class="slider"
+            value="{{progressValue}}"
+            max="{{duration || 1}}"
+            block-size="12"
+            activeColor="#ec4141"
+            backgroundColor="rgba(255,255,255,0.24)"
+            block-color="#ffffff"
+            bindchanging="onSeeking"
+            bindchange="onSeekEnd"
+          />
+          <text class="time num">{{durationText}}</text>
+        </view>
+
+        <view class="tool-row">
+          <view class="tool" bindtap="onMode">
+            <text class="tool-icon">↻</text>
+            <text>{{modeText}}</text>
+          </view>
+          <view class="tool {{liked ? 'active' : ''}}" bindtap="toggleLike">
+            <text class="tool-icon">♥</text>
+            <text>{{liked ? '已喜欢' : '喜欢'}}</text>
+          </view>
+          <view class="tool" bindtap="openPicker">
+            <text class="tool-icon">＋</text>
+            <text>歌单</text>
+          </view>
+          <view class="tool" bindtap="openQueue">
+            <text class="tool-icon">≡</text>
+            <text>播放列表</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 歌词 -->
+    <view class="lyric-area">
+      <scroll-view
+        wx:if="{{lyrics.length}}"
+        scroll-y
+        class="lyric-scroll"
+        scroll-top="{{scrollTop}}"
+        scroll-with-animation
+      >
+        <view
+          class="lyric-line {{index === activeLyricIndex ? 'active' : ''}}"
+          wx:for="{{lyrics}}"
+          wx:key="time"
+          data-index="{{index}}"
+          bindtap="onLyricTap"
+        >{{item.text}}</view>
+      </scroll-view>
+      <view class="lyric-empty" wx:if="{{!lyrics.length}}">纯音乐，请欣赏</view>
+    </view>
+
+    <!-- 评论 -->
+    <view class="comment-area">
+      <view class="card comment-card">
+        <view class="section-title">听友评论</view>
+        <comment-list song-id="{{song.id}}" />
+      </view>
+    </view>
+  </block>
+
+  <empty wx:elif="{{!loading}}" text="歌曲不存在或已被删除" />
+
+  <playlist-picker show="{{pickerVisible}}" song-id="{{song ? song.id : 0}}" bind:close="closePicker" />
+
+  <!-- 播放队列 -->
+  <view class="queue-mask" wx:if="{{queueVisible}}" catchtap="closeQueue" catchtouchmove="noop">
+    <view class="queue-panel" catchtap="noop">
+      <view class="queue-head">
+        <text class="queue-title">当前播放（{{queue.length}}）</text>
+        <text class="queue-close" catchtap="closeQueue">关闭</text>
+      </view>
+      <scroll-view scroll-y class="queue-list">
+        <view
+          wx:for="{{queue}}"
+          wx:key="id"
+          class="queue-item {{index === currentIndex ? 'active' : ''}}"
+          data-index="{{index}}"
+          bindtap="onQueueItem"
+        >
+          <text class="queue-index num">{{index + 1}}</text>
+          <image class="queue-cover" src="{{item.cover}}" mode="aspectFill" />
+          <view class="queue-main">
+            <text class="queue-name text-ellipsis">{{item.name}}</text>
+            <text class="queue-singer text-ellipsis">{{item.singerName}}</text>
+          </view>
+          <text class="queue-time num">{{fmt.duration(item.duration)}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
